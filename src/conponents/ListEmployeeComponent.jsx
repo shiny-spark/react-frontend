@@ -10,6 +10,11 @@ class ListEmployeeComponent extends Component {
             employees: []
         }
         this.addEmployee = this.addEmployee.bind(this);
+        this.editEmployee = this.editEmployee.bind(this);
+    }
+
+    editEmployee(id) {
+        this.props.navigate(`/update-employee/${id}`);
     }
 
     componentDidMount() {
@@ -47,6 +52,10 @@ class ListEmployeeComponent extends Component {
                                             <td>{employee.firstName}</td>
                                             <td>{employee.lastName}</td>
                                             <td>{employee.emailId}</td>
+                                            <td>
+                                                <button onClick={() => { this.editEmployee(employee.id) }} className='btn btn-info'>Update</button>
+                                                <button className='btn btn-danger'>Delete</button>
+                                            </td>
                                         </tr>
                                 )
                             }
@@ -58,7 +67,7 @@ class ListEmployeeComponent extends Component {
     }
 }
 
-export default function(props) {
+export default function (props) {
     const navigate = useNavigate();
     return <ListEmployeeComponent {...props} navigate={navigate} />;
 }

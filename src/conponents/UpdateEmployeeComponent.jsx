@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import EmployeeService from '../services/EmployeeService';
 
-class CreateEmployeeComponent extends Component {
+class UpdateEmployeeComponent extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            id: this.props.id,
             firstName: '',
             lastName: '',
             emailId: ''
@@ -14,10 +15,23 @@ class CreateEmployeeComponent extends Component {
 
         this.changeFirstNameHandler = this.changeFirstNameHandler.bind(this);
         this.changeLastNameHandler = this.changeLastNameHandler.bind(this);
-        this.saveEmployee = this.saveEmployee.bind(this);
+        this.updateEmployee = this.updateEmployee.bind(this);
     }
 
-    saveEmployee = (event) => {
+    componentDidMount() {
+        EmployeeService.getEmployeeById(this.state.id).then(
+            (res) => {
+                let employee = res.data;
+                this.setState({
+                    firstName: employee.firstName,
+                    lastName: employee.lastName,
+                    emailId: employee.emailId
+                });
+            }
+        );
+    }
+
+    updateEmployee = (event) => {
         event.preventDefault();
 
         let employee = {
@@ -25,8 +39,8 @@ class CreateEmployeeComponent extends Component {
             lastName: this.state.lastName,
             emailId: this.state.emailId
         }
-        
-        EmployeeService.createEmployee(employee).then(res => {
+
+        EmployeeService.updateEmployee(employee).then(res => {
             this.props.navigate('/employees');
         });
     }
@@ -53,7 +67,7 @@ class CreateEmployeeComponent extends Component {
                 <div className='container'>
                     <div className='row'>
                         <div className='card col-md-6 offset-md-3 offset-md-3'>
-                            <h3 className='text-center'>Add Employee</h3>
+                            <h3 className='text-center'>Update Employee</h3>
                             <div className='card-body'>
                                 <form>
                                     <div className='form-group'>
@@ -69,7 +83,7 @@ class CreateEmployeeComponent extends Component {
                                         <input placeholder='Email Adress' name='emailId' className='form-control' value={this.state.emailId} onChange={this.changeEmailIdHandler} />
                                     </div>
 
-                                    <button className='btn btn-success' onClick={this.saveEmployee}>Save</button>
+                                    <button className='btn btn-success' onClick={this.updateEmployee}>Save</button>
                                     <button className='btn btn-danger' onClick={this.cancel.bind(this)} style={{ marginLeft: "10px" }}>Cancel</button>
                                 </form>
                             </div>
@@ -83,5 +97,6 @@ class CreateEmployeeComponent extends Component {
 
 export default function (props) {
     const navigate = useNavigate();
-    return <CreateEmployeeComponent {...props} navigate={navigate} />;
+    const { id } = useParams();
+    return <UpdateEmployeeComponent {...props} navigate={navigate} id={id} />;
 }

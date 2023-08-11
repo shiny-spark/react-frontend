@@ -7,7 +7,7 @@ class HeaderComponent extends Component {
                 <header>
                     <nav className='navbar navbar-expand-md navbar-dark bg-dark'>
                         <div>
-                            <a href='https://sparkcraft.ru' className='navbar-brand'>Employee Management</a>
+                            <a href='/' className='navbar-brand'>Employee Management</a>
                         </div>
                     </nav>
                 </header>
