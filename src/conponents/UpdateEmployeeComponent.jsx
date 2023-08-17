@@ -40,7 +40,7 @@ class UpdateEmployeeComponent extends Component {
             emailId: this.state.emailId
         }
 
-        EmployeeService.updateEmployee(employee).then(res => {
+        EmployeeService.updateEmployee(employee, this.state.id).then(res => {
             this.props.navigate('/employees');
         });
     }
@@ -78,7 +78,7 @@ class UpdateEmployeeComponent extends Component {
                                         <label>Last Name: </label>
                                         <input placeholder='Last Name' name='lastName' className='form-control' value={this.state.lastName} onChange={this.changeLastNameHandler} />
                                     </div>
-                                    <div className='form-group'>
+                                    <div className='form-group mb-3'>
                                         <label>Email Adress: </label>
                                         <input placeholder='Email Adress' name='emailId' className='form-control' value={this.state.emailId} onChange={this.changeEmailIdHandler} />
                                     </div>
